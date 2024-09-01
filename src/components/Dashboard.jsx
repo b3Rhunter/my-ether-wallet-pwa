@@ -11,10 +11,6 @@ function Dashboard({ balance }) {
         <Link to="/send" className="btn glass">Send ETH</Link>
         <Link to="/receive" className="btn glass">Receive ETH</Link>
       </div>
-      <div className="transaction-history">
-        <h3>Recent Transactions</h3>
-        {/* Add transaction list here */}
-      </div>
     </main>
   );
 }

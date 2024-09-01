@@ -16,24 +16,25 @@ function App() {
   const [address, setAddress] = useState('');
   const [balance, setBalance] = useState('');
   const [isConnected, setIsConnected] = useState(false);
+  const [network, setNetwork] = useState('sepolia');
 
   useEffect(() => {
-    loadSavedWallet(setProvider, setSigner, setAddress, setBalance, setIsConnected);
+    loadSavedWallet(setProvider, setSigner, setAddress, setBalance, setIsConnected, setNetwork);
   }, []);
 
   return (
     <Router>
       <Matrix/>
       <div className='app'>
-
         <header className='header'>
-        
-        {isConnected && <div className='balance'>{balance} ETH</div>}
-        <h1 className="logo">EtherWallet</h1>
-        {isConnected && <div onClick={() => disconnectWallet(setProvider, setSigner, setAddress, setBalance, setIsConnected)} className="btn glass address">{address.substr(0, 6) + "..."}</div>
-        }
+          {isConnected && <div className='balance'>{balance} ETH</div>}
+          <h1 className="logo">EtherWallet</h1>
+          {isConnected && (
+            <div onClick={() => disconnectWallet(setProvider, setSigner, setAddress, setBalance, setIsConnected)} className="btn glass address">
+              {address.substr(0, 6) + "..."}
+            </div>
+          )}
         </header>
-
 
         <Routes>
           <Route path="/" element={
@@ -46,12 +47,12 @@ function App() {
           } />
           <Route path="/dashboard" element={
             isConnected ?
-              <Dashboard balance={balance} /> :
+              <Dashboard balance={balance} network={network} /> :
               <Navigate to="/" />
           } />
           <Route path="/send" element={
             isConnected ?
-              <Send signer={signer} updateBalance={() => updateBalance(address, provider, setBalance)} /> :
+              <Send signer={signer} updateBalance={() => updateBalance(address, provider, setBalance)} network={network} /> :
               <Navigate to="/" />
           } />
           <Route path="/receive" element={
@@ -68,6 +69,8 @@ function App() {
                 setBalance={setBalance}
                 setProvider={setProvider}
                 setSigner={setSigner}
+                network={network}
+                setNetwork={setNetwork}
               /> :
               <Navigate to="/" />
           } />
